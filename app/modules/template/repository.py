@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 from typing import Optional, List
 from fastapi import Depends, HTTPException, status
@@ -5,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
 from app.modules.template.models import TemplateModel
-from app.modules.template.schemas  import CreateTemplateModel, 
+from app.modules.template.schemas  import CreateTemplateModel
 
 
 class TemplateRepository:
@@ -24,7 +25,8 @@ class TemplateRepository:
         return template
 
     def get_template_by_id(self, template_id) -> Optional[TemplateModel]:
-        return self.db.query(TemplateModel).filter(TemplateModel.id == template_id).first()
+        uuid_obj = uuid.UUID(template_id)
+        return self.db.query(TemplateModel).filter(TemplateModel.id == uuid_obj).first()
 
     
     def get_template_by_name(self, name: str) -> Optional[TemplateModel]:

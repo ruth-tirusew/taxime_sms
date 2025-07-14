@@ -7,14 +7,14 @@ class TemplateBase(BaseModel):
     messageTemplate: str
 
 
-class CreateTemplateModel(TemplateBase):
-    ...
-
 class GetTemplateModel(TemplateBase):
     id: UUID4
 
-class UpdateTemplateModel(TemplateBase):
-    id: UUID4
-
-class GetAllTemplateModel(TemplateBase):
+class GetAllTemplateModel(BaseModel):
     templates: List[GetTemplateModel]
+
+class CreateTemplateModel(TemplateBase):
+    ...
+
+class UpdateTemplateModel(TemplateBase):
+    ...
