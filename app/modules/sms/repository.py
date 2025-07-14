@@ -10,7 +10,7 @@ class SMSRepository:
         self.db = db_session
 
     def create_sms(self, sms_data, message_id) -> SMSModel:
-        sms = SMSModel(**sms_data.dict(), message_id)
+        sms = SMSModel({**sms_data.dict(), "message_id": message_id})
         self.db.add(sms)
         try:
             self.db.commit()
@@ -24,7 +24,9 @@ class SMSRepository:
         return self.db.query(SMSModel).filter(SMSModel.id == sms_id).first()
 
     def get_all_sms(self) -> List[SMSModel]:
-        return self.db.query(SMSModel).all()
+        sms =  self.db.query(SMSModel).all()
+        print(sms)
+        return sms
 
     def update_sms(self, sms_id, update_data) -> SMSModel:
         sms = self.get_sms_by_id(sms_id)

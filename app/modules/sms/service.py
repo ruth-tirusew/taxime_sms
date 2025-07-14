@@ -1,20 +1,20 @@
 from typing import Dict, Any
 from app.adapters import SMSAdapterInterface, CacheAdapterInterface
 from app.modules.sms.repository import SMSRepository
-from app.modules.sms.schemas import SMSCreate, SMSResponse
+from app.modules.sms.schemas import CreateSMS, GetAllSMS, GetSMS
 from app.modules.template.service import TemplateService
 
 class SMSService:
     def __init__(
         self,
         sms_adapter: SMSAdapterInterface,
-        template_service: TemplateService
+        template_service: TemplateService,
         repository: SMSRepository
     ):
         self.sms_adapter = sms_adapter
         self.repository = repository
 
-    async def create_sms(self, sms_data: SMSCreate) -> Dict[str, Any]:
+    async def create_sms(self, sms_data: CreateSMS) -> Dict[str, Any]:
         message = sms_data.message
         if sms_data.template_id:
             template = self.template_service.get_template_by_id(sms_data.template_id)
@@ -31,7 +31,10 @@ class SMSService:
         return self.repository.get_sms_by_id(sms_id)
 
     def get_all_sms(self):
-        return self.repository.get_all_sms()
+        sms_list = self.repository.get_all_sms()
+        return GetAllSMS(
+            sms=[GetSMS.model_validate(s) for s in sms_list]
+        )
 
     def update_sms(self, sms_id, update_data):
         return self.repository.update_sms(sms_id, update_data)
