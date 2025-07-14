@@ -10,8 +10,9 @@ class Settings(BaseSettings):
     SENDER_NAME: str = 'taxime'
     
     # Afrosms
-    AFROSMS_URL:str="https://api.afromessage.com/"
+    AFROSMS_URL:str="https://api.afromessage.com"
     AFROSMS_IDENTIFIER_URL:Optional[str]=None
+    AFROSMS_TOKEN:Optional[str]=None
 
 
     # TELE configs
@@ -24,7 +25,6 @@ class Settings(BaseSettings):
 
 def get_settings() -> Settings:
     return Settings()
-
 
 settings = get_settings()
 
