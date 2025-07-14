@@ -26,7 +26,11 @@ class AfroSMSAdapter(SMSAdapterInterface):
                     'to': phone,
                     'message': message
             })
-            return response.json()
+
+            result =  response.json()
+            if not result.get("acknowledge") == "success":
+                raise ValueError("Failed to send sms")
+            return result.get("response")
     
     async def send_bulk_sms(self, phone: List[str], message: str, campain_name:str) -> Dict[str, Any]:
         async with httpx.AsyncClient() as client:
